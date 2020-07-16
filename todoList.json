@@ -1,10 +1,13 @@
 [
     {
         "task": "Ethics Workshop",
-        "date": 7202020
+        "date": 7202020,
+        "active": false
     },
     {
         "task": "Coffee",
-        "date": 7182020
+        "date": 7192020,
+        "active": true,
+        "completed": true
     }
 ]

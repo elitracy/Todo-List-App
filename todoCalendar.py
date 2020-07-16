@@ -91,6 +91,6 @@ def listEvents():
     result = service.events().list(calendarId=calendar_id,timeMin=now,timeMax=plusWeek).execute()
     for i in range(100):
         try:
-            pprint.pprint(result['items'][i]['summary'])
+            pprint.pprint((result['items'][i]['summary']).strip("'"))
         except Exception:
             print(end='')
