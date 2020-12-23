@@ -44,31 +44,32 @@ while user != "exit":
         while cont:
             #add to json object
             tempTask = newItem(input("Task: "),input("Date Due[mm/dd/yyyy]: "),False,False)
-            todoList.append({
+            
+            try:
+                todoList.append({
                 "task": tempTask.task,
                 "date": int(tempTask.date),
                 "active": tempTask.active,
                 "completed": tempTask.completed
-            })
+                })
+                year = tempTask.date[4:8]
+                month = tempTask.date[0:2]
+                day = tempTask.date[2:4]
+                googleDate = '%s-%s-%s' % (year,month,day)
+            except Exception as e:
+                print("Invalid Date")
+                break
             
-            year = tempTask.date[4:8]
-            month = tempTask.date[0:2]
-            day = tempTask.date[2:4]
-            googleDate = '%s-%s-%s' % (year,month,day)
 
             #create new event on Google Calendar            
             todoCalendar.createNewEvent(tempTask.task,googleDate,googleDate)
 
-            #prompt for new task
-            """contPrompt = input("New Task[y/n]: ")
-            if contPrompt == 'n'.casefold() or contPrompt == 'no'.casefold():
-                """
             cont = False
             
-        #write to json file
-        jsonFile = open("todoList.json", 'w+')
-        jsonFile.write(json.dumps(todoList, indent=4))
-        jsonFile.close()
+            #write to json file
+            jsonFile = open("todoList.json", 'w+')
+            jsonFile.write(json.dumps(todoList, indent=4))
+            jsonFile.close()
     
     elif user == "list":
 
@@ -103,15 +104,17 @@ while user != "exit":
         for i in data:
             for key,val in i.items():
                 if strToRemove in str(val):
-                    #print('Item Found\nRemoving Item')
+
+                    print('Item Found\nRemoving Item')
                     data.remove(i)
                     jsonFile = open("todoList.json", 'w+')
                     jsonFile.write(json.dumps(data, indent=4))
                     jsonFile.close()
 
+                    # print(i["task"])
                     todoCalendar.removeEvent(i['task'])
 
-                    #print(str(i['task']))
+                    # print(str(i['task']))
                     #todoCalendar.removeEvent(str(i['task']))
 
     elif 'track' in user:
